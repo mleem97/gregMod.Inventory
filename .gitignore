@@ -1,15 +1,17 @@
-# Build output
-bin/
-obj/
+# Build outputs
+[Bb]in/
+[Oo]bj/
 
-# Visual Studio
+# IDE
 .vs/
 *.user
 *.suo
-
-# Rider
+*.csproj.user
 .idea/
 
 # OS
-Thumbs.db
 .DS_Store
+Thumbs.db
+
+# NuGet
+*.nupkg

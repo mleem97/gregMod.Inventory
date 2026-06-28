@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Il2Cpp;
 using UnityEngine;
 
-namespace InventoryMod
+namespace GregModInventory
 {
     public static class Inventory
     {

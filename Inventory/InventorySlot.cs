@@ -1,7 +1,7 @@
 using Il2Cpp;
 using UnityEngine;
 
-namespace InventoryMod
+namespace GregModInventory
 {
     public class InventorySlot
     {

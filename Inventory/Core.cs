@@ -4,10 +4,10 @@ using MelonLoader;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[assembly: MelonInfo(typeof(InventoryMod.Core), "Inventory", "1.0.1", "leoms1408")]
+[assembly: MelonInfo(typeof(GregModInventory.Core), "gregMod.Inventory", "1.0.1", "leoms1408 / mleem97")]
 [assembly: MelonGame("Waseku", "Data Center")]
 
-namespace InventoryMod
+namespace GregModInventory
 {
     public class Core : MelonMod
     {
@@ -26,7 +26,7 @@ namespace InventoryMod
         {
             Instance = this;
             HarmonyInstance.PatchAll();
-            LoggerInstance.Msg("Inventory Mod v1.0.1 loaded!");
+            LoggerInstance.Msg("gregMod.Inventory v1.0.1 loaded. Based on Inventory by leoms1408.");
         }
 
         public override void OnUpdate()
