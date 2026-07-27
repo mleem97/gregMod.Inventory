@@ -4,7 +4,7 @@ using MelonLoader;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[assembly: MelonInfo(typeof(GregModInventory.Core), "gregMod.Inventory", "1.0.1", "leoms1408 / mleem97")]
+[assembly: MelonInfo(typeof(GregModInventory.Core), "gregMod.Inventory", "1.0.2", "leoms1408 / mleem97")]
 [assembly: MelonGame("Waseku", "Data Center")]
 
 namespace GregModInventory
