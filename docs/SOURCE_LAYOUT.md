@@ -1,11 +1,11 @@
 # Source layout
 
-All source lives under `Inventory/` with root namespace **`GregModInventory`**. No sub-namespaces.
+All source lives under `src/Inventory/` with root namespace **`GregModInventory`**. No sub-namespaces.
 
 ## Tree
 
 ```
-Inventory/
+src/Inventory/
 ├── Core.cs              # MelonLoader entry point, input handling, drop logic
 ├── Inventory.cs         # Slot management, stash/restore, icon extraction
 ├── InventoryHud.cs      # Hotbar HUD rendering (IMGUI)

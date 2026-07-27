@@ -5,9 +5,9 @@
 [![Discord](https://img.shields.io/badge/Discord-Join-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/greg)
 [![gregFramework](https://img.shields.io/badge/gregFramework-Website-blue?style=for-the-badge)](https://gregframework.eu)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green?style=for-the-badge)](./LICENSE)
-[![Version](https://img.shields.io/badge/Version-1.0.1-orange?style=for-the-badge)]()
-[![GameVersion](https://img.shields.io/badge/Game%20Version-1.0.50.15-yellow?style=for-the-badge)]()
-[![Unity](https://img.shields.io/badge/Unity-6000.5-black?style=for-the-badge&logo=unity&logoColor=white)]()
+[![Version](https://img.shields.io/badge/Version-1.0.2-orange?style=for-the-badge)]()
+[![GameVersion](https://img.shields.io/badge/Game%20Version-1.1.0-yellow?style=for-the-badge)]()
+[![Unity](https://img.shields.io/badge/Unity-6000.4.12f1-black?style=for-the-badge&logo=unity&logoColor=white)]()
 
 ## Links
 
@@ -91,11 +91,11 @@ bin/Release/net6.0/gregMod.Inventory.dll
 
 ```
 gregMod.Inventory/
-├── Inventory/                  # Source code
+├── src/Inventory/              # Source code
 │   ├── Core.cs                 # MelonLoader entry point, input handling, drop logic
 │   ├── Inventory.cs            # Slot management, stash/restore, icon extraction
-│   ├── InventoryHud.cs         # Hotbar HUD rendering (IMGUI)
-│   └── InventorySlot.cs        # Single slot: objects, transform state, stash/restore
+│   ├── InventoryHud.cs          # Hotbar HUD rendering (IMGUI)
+│   └── InventorySlot.cs         # Single slot: objects, transform state, stash/restore
 ├── references/                 # Game & MelonLoader interop DLLs
 ├── gregMod.Inventory.csproj    # Project file
 ├── LICENSE                     # Apache 2.0

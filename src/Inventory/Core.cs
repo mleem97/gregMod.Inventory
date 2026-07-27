@@ -26,7 +26,7 @@ namespace GregModInventory
         {
             Instance = this;
             HarmonyInstance.PatchAll();
-            LoggerInstance.Msg("gregMod.Inventory v1.0.1 loaded. Based on Inventory by leoms1408.");
+            LoggerInstance.Msg("gregMod.Inventory v1.0.2 loaded. Based on Inventory by leoms1408.");
         }
 
         public override void OnUpdate()

@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.2
+
+- Updated game interop references for Data Center on Unity 6000.4.12f1 / game version 1.1.0
+- Updated the runtime release log version to match the assembly metadata
+
 ## v1.0.1
 
 - Fork of [leoms1408/datacenter-inventory](https://github.com/leoms1408/datacenter-inventory) integrated into gregMod ecosystem
