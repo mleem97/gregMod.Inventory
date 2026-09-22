@@ -13,7 +13,7 @@ namespace GregModInventory
         private static readonly Color StashedColor = new Color(0.25f, 0.35f, 0.25f, 0.8f);
         private static readonly Color ActiveColor = new Color(0.2f, 0.5f, 0.8f, 0.9f);
         private static readonly Color ActiveWithItemColor = new Color(0.3f, 0.6f, 0.3f, 0.9f);
-        private static readonly Color BorderColor = new Color(1f, 1f, 1f, 0.8f);
+        private static readonly Color BorderColor = new Color(0.14f, 0.17f, 0.22f, 0.9f);
 
         private static Texture2D _tex;
 
