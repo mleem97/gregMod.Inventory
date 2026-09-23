@@ -6,6 +6,7 @@
 
 ## Links
 
+- **Steam Workshop:** [My Workshop (Data Center)](https://steamcommunity.com/id/frikadelle3000/myworkshopfiles/?appid=4170200)
 - **Repository:** [https://github.com/mleem97/gregMod.Inventory](https://github.com/mleem97/gregMod.Inventory)
 - **Issues:** [https://github.com/mleem97/gregMod.Inventory/issues](https://github.com/mleem97/gregMod.Inventory/issues)
 - **Releases:** [https://github.com/mleem97/gregMod.Inventory/releases](https://github.com/mleem97/gregMod.Inventory/releases)
