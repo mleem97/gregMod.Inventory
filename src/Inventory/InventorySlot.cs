@@ -63,10 +63,10 @@ namespace GregModInventory
                         Core.CachedInputCtrl = usable.inputctrl;
                 }
 
-                // ALLE Items werden deaktiviert im Stash gehalten: unsichtbar,
-                // kein Update()/Raycast, keine Save-Scans. CableSpinner werden
-                // zusaetzlich auf die Stash-Position teleportiert (Backup fuer
-                // den Y-Harmony-Patch); RestoreToHand reaktiviert sie wieder.
+                // ALL items kept disabled in stash: invisible,
+                // no Update()/raycast, no save scans. CableSpinners also
+                // teleported to stash position (backup for
+                // Y harmony patch); RestoreToHand reactivates them.
                 if (go.GetComponent<CableSpinner>() != null)
                 {
                     go.transform.SetParent(null, false);
@@ -106,14 +106,14 @@ namespace GregModInventory
                         usable.rb.angularVelocity = Vector3.zero;
                     }
 
-                    // KEIN InteractOnClick() mehr: Das ist der Vanilla
-                    // Click-Pickup-Handler. Programmatisch aufgerufen hat er
-                    // pro Restore Vanilla-UI-Elemente/hand-Kopien nacherzeugt
-                    // (UI-Duplikate + Item-Vermehrung pro Slot-Wechsel).
-                    // Stattdessen wird der Hand-Status direkt gesetzt; alle
-                    // Felder, die Vanilla beim Pickup setzt (Parent, Transform,
-                    // objectInHands, PlayerManager-Hand-Array), pflegt
-                    // RestoreSlotItems/RestoreToHand manuell.
+                    // NO more InteractOnClick(): that is the vanilla
+                    // click-pickup handler. Called programmatically it
+                    // re-created vanilla UI elements/hand copies per restore
+                    // (UI duplicates + item duplication per slot switch).
+                    // Instead hand state is set directly; all
+                    // fields vanilla sets on pickup (parent, transform,
+                    // objectInHands, PlayerManager hand array)
+                    // RestoreSlotItems/RestoreToHand maintain manually.
                     usable.objectInHands = true;
                 }
             }

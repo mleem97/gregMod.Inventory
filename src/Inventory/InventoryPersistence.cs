@@ -8,35 +8,35 @@ using UnityEngine;
 namespace GregModInventory
 {
     /// <summary>
-    /// Save-Persistenz des Hotbar-Inventars ueber gregCore
-    /// (GregSaveGuard-Sidecar "gregMod.Inventory").
+    /// Save persistence for hotbar inventory via gregCore
+    /// (GregSaveGuard sidecar "gregMod.Inventory").
     ///
-    /// Format (eine Zeile, robust ohne JSON-Dependency):
+    /// Format (one line, robust without JSON dependency):
     ///   v=1;active=2;slots=idx,typeInt,prefabID,count,len,inUse,ctype|...
-    /// Floats invariant ("R"). Nur belegte Slots werden geschrieben.
+    /// Floats invariant ("R"). Only filled slots are written.
     ///
-    /// Laden: Der Sidecar-Load-Callback parkt das Payload; Sobald der Shop
-    /// verfuegbar ist, werden Slots neu aufgebaut (Prefab-Lookup ueber
-    /// ComputerShop.GetPrefabForItem — funktioniert auch fuer MoreSpools-IDs
-    /// 100+ und Backplanes-Varianten 9001+). Bereits in der Szene liegende
-    /// Stash-Streuner (y &gt; 4000, z.B. vom Vanilla-Save wiederhergestellt)
-    /// werden per prefabID adoptiert statt neu gespawnt;Rest wird zerstoert.
+    /// Load: sidecar load callback parks the payload; once the shop
+    /// is available, slots are rebuilt (prefab lookup via
+    /// ComputerShop.GetPrefabForItem — also works for MoreSpools IDs
+    /// 100+ and Backplanes variants 9001+). Stash strays already in
+    /// scene (y &gt; 4000, e.g. restored from vanilla save)
+    /// are adopted by prefabID instead of respawned; rest destroyed.
     ///
-    /// JIT-Isolation: NUR RegisterWithCore() beruehrt gregCore-Typen und darf
-    /// NUR hinter GregHost.HasCore aufgerufen werden. Alles andere ist
-    /// Vanilla-only und laeuft auch standalone.
+    /// JIT isolation: ONLY RegisterWithCore() touches gregCore types and must
+    /// ONLY be called behind GregHost.HasCore. Everything else is
+    /// vanilla-only and also runs standalone.
     /// </summary>
     public static class InventoryPersistence
     {
         public const string SidecarId = "gregMod.Inventory";
 
-        // Alles oberhalb dieser Hoehe gilt als unser Stash-Bereich.
-        // (InventorySlot.StashPosition = y 5000; Patch-Schwelle = 1000.)
+        // Everything above this height counts as our stash area.
+        // (InventorySlot.StashPosition = y 5000; patch threshold = 1000.)
         private const float StrayThresholdY = 4000f;
 
         private static string _pendingPayload;
 
-        // NUR aufrufen, wenn GregHost.HasCore true ist!
+        // Call ONLY if GregHost.HasCore is true!
         public static void RegisterWithCore()
         {
             gregCore.Infrastructure.Persistence.GregSaveGuard.RegisterSidecar(
@@ -45,17 +45,17 @@ namespace GregModInventory
 
         public static bool HasPendingPayload => !string.IsNullOrEmpty(_pendingPayload);
 
-        // Vom Sidecar-Load-Callback (gregCore) aufgerufen — parkt nur.
-        // Der eigentliche Spawn passiert in TrySpawnPending (OnUpdate),
-        // sobald der Shop da ist (Reihenfolge-unabhaengig).
+        // Called from sidecar load callback (gregCore) — parks only.
+        // Actual spawn happens in TrySpawnPending (OnUpdate),
+        // once shop is ready (order-independent).
         private static void StagePayload(string payload)
         {
             if (string.IsNullOrWhiteSpace(payload)) return;
             _pendingPayload = payload;
-            MelonLogger.Msg($"[Inventory] Save-Payload geparkt ({payload.Length} Zeichen).");
+            MelonLogger.Msg($"[Inventory] Save payload parked ({payload.Length} chars).");
         }
 
-        // Jede Frame aus Core.OnUpdate aufrufen (vanilla-only, standalone-safe).
+        // Call every frame from Core.OnUpdate (vanilla-only, standalone-safe).
         public static void TrySpawnPending()
         {
             if (string.IsNullOrEmpty(_pendingPayload)) return;
@@ -64,18 +64,18 @@ namespace GregModInventory
             if (shop == null) return;
 
             string payload = _pendingPayload;
-            _pendingPayload = null; // One-Shot: kein endloses Retry.
+            _pendingPayload = null; // One-shot: no endless retry.
             try
             {
                 SpawnFromPayload(shop, payload);
             }
             catch (Exception ex)
             {
-                MelonLogger.Error($"[Inventory] Restore fehlgeschlagen: {ex.GetBaseException().Message}");
+                MelonLogger.Error($"[Inventory] Restore failed: {ex.GetBaseException().Message}");
             }
         }
 
-        // ── Serialisieren ────────────────────────────────────────────────────
+        // ── Serialize ────────────────────────────────────────────────────
 
         public static string Serialize()
         {
@@ -192,11 +192,11 @@ namespace GregModInventory
         {
             if (!TryParse(payload, out int active, out var descs) || descs.Count == 0)
             {
-                MelonLogger.Warning("[Inventory] Payload leer/ungueltig — nichts wiederherzustellen.");
+                MelonLogger.Warning("[Inventory] Payload empty/invalid — nothing to restore.");
                 return;
             }
 
-            // Eigene Objekte einsammeln (Schutz vor Sweep), dann Slots leeren.
+            // Collect own objects (sweep guard), then clear slots.
             var owned = new HashSet<int>();
             for (int i = 0; i < Inventory.MaxSlots; i++)
             {
@@ -210,8 +210,8 @@ namespace GregModInventory
                 Inventory.Slots[i] = null;
             }
 
-            // Streuner: unparented UsableObjects oberhalb der Schwelle, die
-            // nicht uns gehoeren (z.B. Vanilla-Restore unseres alten Stashs).
+            // Strays: unparented UsableObjects above threshold that are
+            // not ours (e.g. vanilla restore of our old stash).
             var strays = CollectStrays(owned);
 
             int restored = 0;
@@ -221,7 +221,7 @@ namespace GregModInventory
                 {
                     var gos = new List<GameObject>();
 
-                    // 1) Adoptieren: passende Streuner per prefabID uebernehmen.
+                    // 1) Adopt: take matching strays by prefabID.
                     for (int i = strays.Count - 1; i >= 0 && gos.Count < d.Count; i--)
                     {
                         var stray = strays[i];
@@ -239,7 +239,7 @@ namespace GregModInventory
                         }
                     }
 
-                    // 2) Rest frisch spawnen (Prefab-Lookup ueber den Shop).
+                    // 2) Spawn rest fresh (prefab lookup via shop).
                     GameObject prefab = null;
                     if (gos.Count < d.Count)
                     {
@@ -251,9 +251,9 @@ namespace GregModInventory
                         catch { prefab = null; }
                         if (prefab == null)
                         {
-                            MelonLogger.Warning($"[Inventory] Kein Prefab fuer id={d.PrefabID} " +
-                                $"type={d.TypeInt} — Slot {d.SlotIndex} uebersprungen " +
-                                $"({gos.Count}/{d.Count} adoptiert).");
+                            MelonLogger.Warning($"[Inventory] No prefab for id={d.PrefabID} " +
+                                $"type={d.TypeInt} — slot {d.SlotIndex} skipped " +
+                                $"({gos.Count}/{d.Count} adopted).");
                         }
                         else
                         {
@@ -273,7 +273,7 @@ namespace GregModInventory
 
                     if (gos.Count == 0) continue;
 
-                    // Kabel-Status auf alle Spinner anwenden.
+                    // Apply cable state to all spinners.
                     foreach (var go in gos)
                     {
                         try
@@ -289,8 +289,8 @@ namespace GregModInventory
                         catch { }
                     }
 
-                    // Anzeigename + Icon (kurz aktivieren fuers Icon, Stash
-                    // deaktiviert danach wieder).
+                    // Display name + icon (briefly enable for icon, stash
+                    // disables again after).
                     string displayName = ((PlayerManager.ObjectInHand)d.TypeInt).ToString();
                     try
                     {
@@ -319,12 +319,12 @@ namespace GregModInventory
                 }
                 catch (Exception ex)
                 {
-                    MelonLogger.Warning($"[Inventory] Slot {d.SlotIndex} Restore-Fehler: {ex.Message}");
+                    MelonLogger.Warning($"[Inventory] Slot {d.SlotIndex} restore error: {ex.Message}");
                 }
             }
 
-            // Uebrige Streuner ohne Payload-Zuhause zerstoeren (unsichtbarer
-            // Leak am Stash-Punkt), mit Log.
+            // Destroy leftover strays with no payload home (invisible
+            // leak at stash point), with log.
             int destroyed = 0;
             foreach (var stray in strays)
             {
@@ -337,10 +337,10 @@ namespace GregModInventory
                 catch { }
             }
             if (destroyed > 0)
-                MelonLogger.Msg($"[Inventory] {destroyed} heimatlose(n) Stash-Streuner aufgeraeumt.");
+                MelonLogger.Msg($"[Inventory] Cleaned up {destroyed} homeless stash stray(s).");
 
             Inventory.ActiveSlot = active;
-            MelonLogger.Msg($"[Inventory] Restore abgeschlossen: {restored}/{descs.Count} Slot(s).");
+            MelonLogger.Msg($"[Inventory] Restore done: {restored}/{descs.Count} slot(s).");
         }
 
         private static List<GameObject> CollectStrays(HashSet<int> owned)

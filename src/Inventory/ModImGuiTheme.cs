@@ -1,8 +1,8 @@
 using UnityEngine;
 
-// Mod-lokaler Mirror von gregCore.UI.GregImGuiTheme (kanonisch dort). (Himmelblau/Atollblau, modern minimal).
-// Absichtlich entkoppelt (kein gregCore nötig): Dummy-sichere Factories
-// (parameterlose Ctors + Feldzuweisung). Bei Theme-Aenderungen hier nachziehen.
+// Mod-local mirror of gregCore.UI.GregImGuiTheme (canonical there). (Sky/atoll blue, modern minimal).
+// Deliberately decoupled (no gregCore needed): dummy-safe factories
+// (parameterless ctors + field assignment). Mirror theme changes here.
 internal static class ModImGuiTheme
 {
     internal static readonly Color PanelBg = new Color(0.08f, 0.10f, 0.13f, 0.98f);
