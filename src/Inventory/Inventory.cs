@@ -18,6 +18,7 @@ namespace GregModInventory
         /// Switch to a different hotbar slot. Automatically stashes current hand
         /// items and restores the target slot's items.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage(Justification = "Live Il2Cpp/Unity interop against game assemblies; needs running game.")]
         public static void SwitchToSlot(int slotIndex)
         {
             if (slotIndex < 0 || slotIndex >= MaxSlots) return;
@@ -39,6 +40,7 @@ namespace GregModInventory
         /// <summary>
         /// Cycle to the next/previous slot (direction +1 or -1).
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage(Justification = "Live Il2Cpp/Unity interop against game assemblies; needs running game.")]
         public static void CycleSlot(int direction)
         {
             int next = ((ActiveSlot + direction) % MaxSlots + MaxSlots) % MaxSlots;
@@ -48,6 +50,7 @@ namespace GregModInventory
         /// <summary>
         /// Take whatever the player is holding and stash it into the given slot.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage(Justification = "Live Il2Cpp/Unity interop against game assemblies; needs running game.")]
         private static void StashHandItems(int slotIndex)
         {
             var pm = PlayerManager.instance;
@@ -115,6 +118,7 @@ namespace GregModInventory
         /// <summary>
         /// Restore a slot's items into the player's hand.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage(Justification = "Live Il2Cpp/Unity interop against game assemblies; needs running game.")]
         private static void RestoreSlotItems(int slotIndex)
         {
             var pm = PlayerManager.instance;
@@ -173,6 +177,7 @@ namespace GregModInventory
         /// </summary>
         private static readonly string[] TexSlots = { "_BaseMap", "_MainTex", "_BaseColorMap", "_Albedo", "_AlbedoMap", "_Diffuse" };
 
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage(Justification = "Live Il2Cpp/Unity interop against game assemblies; needs running game.")]
         public static Texture2D GetItemIcon(List<GameObject> objects)
         {
             if (objects == null || objects.Count == 0) return null;

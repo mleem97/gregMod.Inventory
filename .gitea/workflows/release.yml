@@ -34,14 +34,17 @@ jobs:
 
       - name: Get version from tag
         id: version
+        env:
+          TAG_INPUT: ${{ github.event.inputs.tag || github.ref_name }}
         run: |
-          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          TAG="$TAG_INPUT"
           echo "VERSION=${TAG#v}" >> $GITHUB_OUTPUT
           echo "TAG=$TAG" >> $GITHUB_OUTPUT
 
       - name: Create version branch
+        env:
+          TAG: ${{ steps.version.outputs.TAG }}
         run: |
-          TAG="${{ steps.version.outputs.TAG }}"
           BRANCH="release/${TAG}"
           git checkout -b "$BRANCH"
           git push origin "$BRANCH" || true

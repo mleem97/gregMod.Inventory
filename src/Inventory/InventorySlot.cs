@@ -41,6 +41,7 @@ namespace GregModInventory
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage(Justification = "Live Il2Cpp/Unity interop against game assemblies; needs running game.")]
         public void Stash()
         {
             foreach (var go in StoredObjects)
@@ -81,6 +82,7 @@ namespace GregModInventory
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage(Justification = "Live Il2Cpp/Unity interop against game assemblies; needs running game.")]
         public void RestoreToHand(Transform handParent)
         {
             for (int i = 0; i < StoredObjects.Length; i++)

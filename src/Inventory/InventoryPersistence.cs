@@ -48,6 +48,7 @@ namespace GregModInventory
         // Called from sidecar load callback (gregCore) — parks only.
         // Actual spawn happens in TrySpawnPending (OnUpdate),
         // once shop is ready (order-independent).
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage(Justification = "Headless-testable part covered; game-bound remainder needs running game (Il2Cpp/Unity/Melon runtime).")]
         private static void StagePayload(string payload)
         {
             if (string.IsNullOrWhiteSpace(payload)) return;
@@ -56,6 +57,7 @@ namespace GregModInventory
         }
 
         // Call every frame from Core.OnUpdate (vanilla-only, standalone-safe).
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage(Justification = "Live Il2Cpp/Unity interop against game assemblies; needs running game.")]
         public static void TrySpawnPending()
         {
             if (string.IsNullOrEmpty(_pendingPayload)) return;
@@ -188,6 +190,7 @@ namespace GregModInventory
             catch { return false; }
         }
 
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage(Justification = "Live Il2Cpp/Unity interop against game assemblies; needs running game.")]
         private static void SpawnFromPayload(Il2Cpp.ComputerShop shop, string payload)
         {
             if (!TryParse(payload, out int active, out var descs) || descs.Count == 0)
@@ -343,6 +346,7 @@ namespace GregModInventory
             MelonLogger.Msg($"[Inventory] Restore done: {restored}/{descs.Count} slot(s).");
         }
 
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage(Justification = "Live Il2Cpp/Unity interop against game assemblies; needs running game.")]
         private static List<GameObject> CollectStrays(HashSet<int> owned)
         {
             var result = new List<GameObject>();
