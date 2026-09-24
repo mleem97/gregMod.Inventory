@@ -24,5 +24,6 @@
     <Reference Include="UnityEngine.UIModule"><HintPath>references/UnityEngine.UIModule.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="Unity.InputSystem"><HintPath>references/Unity.InputSystem.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="Unity.TextMeshPro"><HintPath>references/Unity.TextMeshPro.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="gregCore"><HintPath>references/gregCore.dll</HintPath><Private>false</Private></Reference>
   </ItemGroup>
 </Project>

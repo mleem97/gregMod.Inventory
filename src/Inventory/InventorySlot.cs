@@ -63,14 +63,15 @@ namespace GregModInventory
                         Core.CachedInputCtrl = usable.inputctrl;
                 }
 
-                // CableSpinners are teleported so the Harmony patch can detect them by Y position.
-                // All other items are deactivated in place — this stops any game Update() logic
-                // (e.g. QSFP port cleanup) that would destroy sub-components when the object
-                // is at an invalid world position.
+                // ALLE Items werden deaktiviert im Stash gehalten: unsichtbar,
+                // kein Update()/Raycast, keine Save-Scans. CableSpinner werden
+                // zusaetzlich auf die Stash-Position teleportiert (Backup fuer
+                // den Y-Harmony-Patch); RestoreToHand reaktiviert sie wieder.
                 if (go.GetComponent<CableSpinner>() != null)
                 {
                     go.transform.SetParent(null, false);
                     go.transform.position = StashPosition;
+                    go.SetActive(false);
                 }
                 else
                 {
@@ -105,18 +106,14 @@ namespace GregModInventory
                         usable.rb.angularVelocity = Vector3.zero;
                     }
 
-                        // Call InteractOnClick to re-initialize any game-internal state set
-                    // during pickup (e.g. cable placement color). The Harmony patch allows
-                    // this since the object is at hand height (y < StashThreshold).
-                    usable.objectInHands = false;
-                    usable.InteractOnClick();
-
-                    // Re-apply our saved transform — InteractOnClick may have repositioned it
-                    go.transform.SetParent(handParent, false);
-                    go.transform.localPosition = SavedLocalPositions[i];
-                    go.transform.localRotation = SavedLocalRotations[i];
-
-                    // Force objectInHands true in case InteractOnClick didn't set it
+                    // KEIN InteractOnClick() mehr: Das ist der Vanilla
+                    // Click-Pickup-Handler. Programmatisch aufgerufen hat er
+                    // pro Restore Vanilla-UI-Elemente/hand-Kopien nacherzeugt
+                    // (UI-Duplikate + Item-Vermehrung pro Slot-Wechsel).
+                    // Stattdessen wird der Hand-Status direkt gesetzt; alle
+                    // Felder, die Vanilla beim Pickup setzt (Parent, Transform,
+                    // objectInHands, PlayerManager-Hand-Array), pflegt
+                    // RestoreSlotItems/RestoreToHand manuell.
                     usable.objectInHands = true;
                 }
             }

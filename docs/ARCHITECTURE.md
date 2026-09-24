@@ -12,5 +12,13 @@
 
 ## Datenflüsse
 
-Projektspezifisch dokumentieren (Komponente A → B, Formate, Schnittstellen).
-Änderungen hier + [`CHANGELOG.md`](../CHANGELOG.md) (Unreleased) nachtragen.
+- **Speichern:** `InventoryPersistence.Serialize()` → gregCore-Sidecar
+  (`GregSaveGuard.RegisterSidecar("gregMod.Inventory")`, Datei neben dem Save).
+  Format: `v=1;active=N;slots=idx,typ,prefabID,stueck,len,inUse,ctyp|...`.
+  Ohne gregCore: kein Save (fluechtig).
+- **Laden:** Sidecar-Callback parkt das Payload → `TrySpawnPending()` (pro Frame,
+  sobald `computerShop` da ist) baut Slots neu: Streuner-Adoption per prefabID
+  (y > 4000), Rest via `ComputerShop.GetPrefabForItem` + `Instantiate`.
+- **Stash/Restore:** `InventorySlot.Stash()` (deaktiviert, Spinner zusaetzlich
+  auf y=5000) ↔ `RestoreToHand()` (Parent/Transform/`objectInHands` manuell —
+  bewusst OHNE `InteractOnClick()`, das Vanilla-UI/Hand-Kopien duplizierte).

@@ -4,7 +4,7 @@ using MelonLoader;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[assembly: MelonInfo(typeof(GregModInventory.Core), "gregMod.Inventory", "1.0.2", "leoms1408 / mleem97")]
+[assembly: MelonInfo(typeof(GregModInventory.Core), "gregMod.Inventory", "1.1.0", "leoms1408 / mleem97")]
 [assembly: MelonGame("Waseku", "Data Center")]
 
 namespace GregModInventory
@@ -26,7 +26,18 @@ namespace GregModInventory
         {
             Instance = this;
             HarmonyInstance.PatchAll();
-            LoggerInstance.Msg("gregMod.Inventory v1.0.2 loaded. Based on Inventory by leoms1408.");
+            try
+            {
+                if (GregHost.HasCore)
+                    InventoryPersistence.RegisterWithCore();
+                else
+                    LoggerInstance.Warning("gregCore nicht gefunden — Inventar ohne Save-Persistenz (fluechtig).");
+            }
+            catch (System.Exception ex)
+            {
+                LoggerInstance.Warning($"Sidecar-Registrierung fehlgeschlagen: {ex.Message}");
+            }
+            LoggerInstance.Msg("gregMod.Inventory v1.1.0 loaded. Based on Inventory by leoms1408.");
         }
 
         public override void OnUpdate()
@@ -41,6 +52,9 @@ namespace GregModInventory
             if (!pm.enabledPlayerMovement) return;
 
             Inventory.CleanupSlots();
+
+            // Save-Restore aus gregCore-Sidecar (no-op ohne Payload/Core).
+            InventoryPersistence.TrySpawnPending();
 
             // Render icon for freshly picked-up items (not from our inventory)
             if (!HandItemsFromInventory)
