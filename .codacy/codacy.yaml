@@ -1,0 +1,14 @@
+runtimes:
+    - python@3.11.11
+tools:
+    - lizard@1.23.0
+    - opengrep@1.23.0
+    - pylint@4.0.5
+    - trivy@0.70.0
+# Build-Artefakte und lebende Symlinks aufs Spiel (kein eigener Code).
+# Vendored Third-Party (lib/) gehoert ebenfalls nicht in die Analyse.
+exclude_paths:
+    - "bin/**"
+    - "obj/**"
+    - "references/**"
+    - "lib/**"
