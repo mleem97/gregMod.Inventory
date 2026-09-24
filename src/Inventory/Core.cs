@@ -31,11 +31,11 @@ namespace GregModInventory
                 if (GregHost.HasCore)
                     InventoryPersistence.RegisterWithCore();
                 else
-                    LoggerInstance.Warning("gregCore nicht gefunden — Inventar ohne Save-Persistenz (fluechtig).");
+                    LoggerInstance.Warning("gregCore missing — inventory without save persistence (volatile).");
             }
             catch (System.Exception ex)
             {
-                LoggerInstance.Warning($"Sidecar-Registrierung fehlgeschlagen: {ex.Message}");
+                LoggerInstance.Warning($"Sidecar registration failed: {ex.Message}");
             }
             LoggerInstance.Msg("gregMod.Inventory v1.1.0 loaded. Based on Inventory by leoms1408.");
         }
@@ -53,7 +53,7 @@ namespace GregModInventory
 
             Inventory.CleanupSlots();
 
-            // Save-Restore aus gregCore-Sidecar (no-op ohne Payload/Core).
+            // Save restore from gregCore sidecar (no-op without payload/core).
             InventoryPersistence.TrySpawnPending();
 
             // Render icon for freshly picked-up items (not from our inventory)

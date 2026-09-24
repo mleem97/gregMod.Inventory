@@ -2,12 +2,12 @@ using System;
 
 namespace GregModInventory;
 
-// Erkennt zur Laufzeit, ob gregCore vorhanden ist (ohne harte Abhaengigkeit
-// zur Laufzeit: reiner Typname-Lookup, kein direkter Typzugriff).
-// Mit Core: Save-Persistenz via GregSaveGuard-Sidecar. Ohne: rein fluechtiges
-// Inventar (Standalone-Modus).
-// WICHTIG: Methoden, die gregCore-Typen beruehren, duerfen NUR aufgerufen
-// werden, wenn HasCore true ist (sonst JIT-TypeLoad bei fehlender DLL).
+// Detects at runtime whether gregCore is present (no hard dependency
+// at runtime: type-name lookup only, no direct type access).
+// With core: save persistence via GregSaveGuard sidecar. Without: purely volatile
+// inventory (standalone mode).
+// IMPORTANT: methods touching gregCore types must ONLY be called
+// if HasCore is true (else JIT TypeLoad without DLL).
 public static class GregHost
 {
     private const string ProbeType = "gregCore.UI.GregNotificationManager, gregCore";
@@ -26,7 +26,7 @@ public static class GregHost
         }
     }
 
-    // Nur zu Testzwecken (z.B. Standalone-Verhalten erzwingen).
+    // Testing only (e.g. force standalone behavior).
     public static void OverrideForTesting(bool? value)
     {
         _hasCore = value;
