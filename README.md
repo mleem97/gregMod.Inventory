@@ -15,22 +15,22 @@
 
 **gregMod.Inventory** — gregMod.Inventory** adds a 9-slot hotbar inventory to **Data Center**. Carry multiple items and switch between them using the scroll wheel or number keys 1–9.
 
-Siehe [docs/INDEX.md](docs/INDEX.md) für die komplette Dokumentation.
+See [docs/INDEX.md](docs/INDEX.md) for the complete documentation.
 
 ## Compatibility
 
-| Plattform | Status |
+| Platform | Status |
 |---|---|
 | Windows x64 | Supported |
 | Linux x64 | Supported |
 
 ## Features
 
-- Siehe [docs/INDEX.md](docs/INDEX.md) und [QUICKSTART.md](QUICKSTART.md)
+- See [docs/INDEX.md](docs/INDEX.md) and [QUICKSTART.md](QUICKSTART.md)
 
 ## Installation
 
-Siehe [QUICKSTART.md](QUICKSTART.md).
+See [QUICKSTART.md](QUICKSTART.md).
 
 ## Build from Source
 
@@ -44,47 +44,46 @@ Details: [QUICKSTART.md](QUICKSTART.md), [CONTRIBUTING.md](CONTRIBUTING.md).
 ## Repository Layout
 
 ```
-├── README.md            # Diese Datei
-├── QUICKSTART.md        # Schnellstart
+├── README.md            # This file
+├── QUICKSTART.md        # Quickstart
 ├── CHANGELOG.md         # Changelog (Keep a Changelog)
-├── CONTRIBUTING.md      # Mitmachen
-├── SECURITY.md          # Sicherheitsmeldungen
-├── CODE_OF_CONDUCT.md   # Verhaltenskodex
-├── AGENTS.md            # Hinweise für KI-Agenten
+├── CONTRIBUTING.md      # Contributing
+├── SECURITY.md          # Security reports
+├── CODE_OF_CONDUCT.md   # Code of conduct
+├── AGENTS.md            # Notes for AI agents
 ├── LICENSE              # Apache-2.0
-├── VERSION              # Single Source of Truth für die Version
-├── docs/                # Dokumentation ([Index](docs/INDEX.md))
-├── scripts/             # Build-/Hilfsskripte
+├── VERSION              # Single source of truth for the version
+├── docs/                # Documentation ([Index](docs/INDEX.md))
+├── scripts/             # Build/helper scripts
 ├── tests/               # Tests
-├── references/          # Referenzen
-├── sponsors/            # Sponsoren
-└── examples/            # Beispiele
+├── references/          # References
+├── sponsors/            # Sponsors
+└── examples/            # Examples
 ```
 
 ## API Documentation
 
-Siehe [`docs/INDEX.md`](docs/INDEX.md).
+See [`docs/INDEX.md`](docs/INDEX.md).
 
 ## Credits
 
-| Rolle | Contributor |
+| Role | Contributor |
 |---|---|
 | **Codebase** | [mleem97](https://github.com/mleem97) |
 
 ## Contributing
 
-Siehe [CONTRIBUTING.md](CONTRIBUTING.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-Apache-2.0 — siehe [`LICENSE`](LICENSE).
+Apache-2.0 — see [`LICENSE`](LICENSE).
 
 ## 🚀 Join the gregFramework Team!
 
-Baust du gerne Mods, Tools oder Docs? Melde dich: **apply@gregframework.eu** oder via
+Do you enjoy building mods, tools, or docs? Get in touch: **apply@gregframework.eu** or via
 [Discord](https://discord.gg/greg) — Code, Assets, Docs, Testing, Infra, Community.
 
 ---
 
 **gregFramework — powered by the community.**
-

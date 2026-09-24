@@ -1,18 +1,18 @@
-# Dokumentation — gregMod.Inventory (Index)
+# Documentation — gregMod.Inventory (Index)
 
-Start: [README.md](../README.md) · Schnellstart: [QUICKSTART.md](../QUICKSTART.md).
+Start: [README.md](../README.md) · Quickstart: [QUICKSTART.md](../QUICKSTART.md).
 
-| Dokument | Inhalt |
+| Document | Contents |
 |---|---|
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Aufbau, Komponenten, Datenflüsse |
-| [README.md](../README.md) | Überblick, Installation, Layout |
-| [QUICKSTART.md](../QUICKSTART.md) | Klonen → Bauen → Testen in 5 Minuten |
-| [CHANGELOG.md](../CHANGELOG.md) | Änderungshistorie |
-| [CONTRIBUTING.md](../CONTRIBUTING.md) | Mitmachen (Branches, PRs, Regeln) |
-| [SECURITY.md](../SECURITY.md) | Sicherheitsmeldungen |
-| [CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md) | Verhaltenskodex |
-| [AGENTS.md](../AGENTS.md) | Hinweise für KI-Agenten |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Structure, components, data flows |
+| [README.md](../README.md) | Overview, installation, layout |
+| [QUICKSTART.md](../QUICKSTART.md) | Clone → build → test in 5 minutes |
+| [CHANGELOG.md](../CHANGELOG.md) | Change history |
+| [CONTRIBUTING.md](../CONTRIBUTING.md) | Contributing (branches, PRs, rules) |
+| [SECURITY.md](../SECURITY.md) | Security reports |
+| [CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md) | Code of conduct |
+| [AGENTS.md](../AGENTS.md) | Notes for AI agents |
 
-Weitere Ordner: [`scripts/`](../scripts/) (Build-/Hilfsskripte), [`tests/`](../tests/) (Tests),
-[`references/`](../references/) (Referenzen), [`sponsors/`](../sponsors/) (Sponsoren),
-[`examples/`](../examples/) (Beispiele).
+Additional folders: [`scripts/`](../scripts/) (build/helper scripts), [`tests/`](../tests/) (tests),
+[`references/`](../references/) (references), [`sponsors/`](../sponsors/) (sponsors),
+[`examples/`](../examples/) (examples).

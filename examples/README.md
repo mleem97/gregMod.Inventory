@@ -1,5 +1,5 @@
 # examples — gregMod.Inventory
 
-Lauffähige Minimalbeispiele.
+Runnable minimal examples.
 
-Zurück: [README.md](../README.md) · Docs: [docs/INDEX.md](../docs/INDEX.md).
+Back: [README.md](../README.md) · Docs: [docs/INDEX.md](../docs/INDEX.md).

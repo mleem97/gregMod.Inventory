@@ -1,5 +1,5 @@
 # scripts — gregMod.Inventory
 
-Build-, Test- und Hilfsskripte.
+Build, test, and helper scripts.
 
-Zurück: [README.md](../README.md) · Docs: [docs/INDEX.md](../docs/INDEX.md).
+Back: [README.md](../README.md) · Docs: [docs/INDEX.md](../docs/INDEX.md).

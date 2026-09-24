@@ -1,11 +1,11 @@
 # Code of Conduct — gregMod.Inventory
 
-Wir folgen dem [Contributor Covenant v2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct.html)
-in Kurzform:
+We follow [Contributor Covenant v2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct.html)
+in short:
 
-- **Respektvoll** kommunizieren, **konstruktiv** kritisieren, **inklusiv** bleiben.
-- Kein Harassment, keine Diskriminierung, kein Spam, kein Doxxing.
-- Geltungsbereich: Issues, PRs, Diskussionen, Chat/Discord rund um dieses Repo.
+- Communicate **respectfully**, criticize **constructively**, stay **inclusive**.
+- No harassment, no discrimination, no spam, no doxxing.
+- Scope: issues, PRs, discussions, chat/Discord around this repo.
 
-Verstöße: Maintainer ([mleem97](https://github.com/mleem97)) kann Beiträge entfernen, Accounts temporär
-oder dauerhaft ausschließen. Meldungen werden vertraulich behandelt.
+Violations: the maintainer ([mleem97](https://github.com/mleem97)) may remove contributions and temporarily
+or permanently ban accounts. Reports are treated confidentially.

@@ -1,17 +1,17 @@
-# AGENTS.md — Hinweise für KI-Agenten (gregMod.Inventory)
+# AGENTS.md — Notes for AI agents (gregMod.Inventory)
 
-Repo: [https://github.com/mleem97/gregMod.Inventory](https://github.com/mleem97/gregMod.Inventory) · Lizenz: Apache-2.0 · Version: siehe `VERSION`.
+Repo: [https://github.com/mleem97/gregMod.Inventory](https://github.com/mleem97/gregMod.Inventory) · License: Apache-2.0 · Version: see `VERSION`.
 
-## Pflichten
+## Duties
 
-1. **Erst lesen:** `README.md`, `docs/INDEX.md`, `CONTRIBUTING.md` — danach erst ändern.
-2. **Keine Secrets committen** (Keys, Tokens, `.env`). Key-Nutzung nur via Umgebungsvariablen.
-3. **Historie erhalten:** kein `push --force`, kein History-Rewrite ohne Auftrag.
-4. **Änderungen belegen:** vor dem Fertigmelden bauen/testen, was das Repo hergibt (`QUICKSTART.md`).
-5. **Doku synchron halten:** bei neuen Features `README.md` + `docs/` + `CHANGELOG.md` (Unreleased) aktualisieren.
-6. **Konventionen:** Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:` …), eine logische Änderung pro Commit.
-7. **Bei Unsicherheit:** anhalten und fragen statt raten — insbesondere bei Deletes, Migrations, CI.
+1. **Read first:** `README.md`, `docs/INDEX.md`, `CONTRIBUTING.md` — only then make changes.
+2. **Do not commit secrets** (keys, tokens, `.env`). Use keys only via environment variables.
+3. **Preserve history:** no `push --force`, no history rewrite without instruction.
+4. **Verify changes:** before reporting completion, build/test whatever the repo supports (`QUICKSTART.md`).
+5. **Keep docs in sync:** for new features, update `README.md` + `docs/` + `CHANGELOG.md` (Unreleased).
+6. **Conventions:** Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:` …), one logical change per commit.
+7. **When in doubt:** stop and ask instead of guessing — especially for deletes, migrations, CI.
 
 ## Layout
 
-Siehe [README.md](README.md) → Repository Layout. Zentrale Anlaufstellen: `docs/INDEX.md`, `scripts/`, `tests/`.
+See [README.md](README.md) → Repository Layout. Central entry points: `docs/INDEX.md`, `scripts/`, `tests/`.

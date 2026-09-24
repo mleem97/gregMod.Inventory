@@ -1,30 +1,30 @@
 # Changelog — gregMod.Inventory
 
-Format: [Keep a Changelog](https://keepachangelog.com/de/1.0.0/). Version: siehe [`VERSION`](VERSION).
+Format: [Keep a Changelog](https://keepachangelog.com/de/1.0.0/). Version: see [`VERSION`](VERSION).
 
 ## [Unreleased]
 
 ### Added
 
-- Save-Persistenz via gregCore (`GregSaveGuard`-Sidecar `gregMod.Inventory`):
-  Slot-Typ, prefabID, Stueckzahl und Kabel-Status (Laenge/verbrauchter Teil/Typ)
-  ueberleben Save/Load. Restore per `ComputerShop.GetPrefabForItem` (funktioniert
-  auch fuer MoreSpools-IDs 100+ und Backplanes-Varianten); Vanilla-restaurierte
-  Stash-Streuner (y > 4000) werden per prefabID adoptiert. Ohne gregCore bleibt
-  das Inventar fluechtig (Standalone, Warnung im Log).
+- Save persistence via gregCore (`GregSaveGuard` sidecar `gregMod.Inventory`):
+  slot type, prefabID, piece count, and cable status (length/consumed part/type)
+  survive save/load. Restore via `ComputerShop.GetPrefabForItem` (also works
+  for MoreSpools IDs 100+ and Backplanes variants); vanilla-restored
+  stash strays (y > 4000) are adopted by prefabID. Without gregCore,
+  the inventory remains volatile (standalone, warning in the log).
 
 ### Fixed
 
-- Kein `InteractOnClick()` mehr beim Slot-Restore: Der Vanilla-Pickup-Handler
-  hat pro Restore UI-Elemente/Hand-Kopien nacherzeugt (dupliziertes Vanilla-UI
-  + Item-Vermehrung pro Slot-Wechsel). Hand-Status wird jetzt direkt gesetzt.
-- Gestashte CableSpinner werden auch deaktiviert (vorher aktiv bei y=5000:
-  Update-/Raycast-/Save-Nebenwirkungen, Klon-Haufen an einem Punkt).
+- No more `InteractOnClick()` on slot restore: the vanilla pickup handler
+  recreated UI elements/hand copies per restore (duplicated vanilla UI
+  + item duplication per slot switch). The hand state is now set directly.
+- Stashed CableSpinners are now deactivated as well (previously active at y=5000:
+  update/raycast/save side effects, clone pile at a single point).
 
 ### Added
 
-- Einheitliches Open-Source-Layout (README, Docs, Badges) nach gregCore-Vorbild.
+- Unified open-source layout (README, docs, badges) following the gregCore template.
 
 ## [0.1.0] — 2026-09-22
 
-- Initialer standardisierter Stand.
+- Initial standardized baseline.

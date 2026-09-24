@@ -1,20 +1,20 @@
 # Security Policy — gregMod.Inventory
 
-## Melden
+## Reporting
 
-Sicherheitslücken bitte **nicht** als öffentliches Issue melden, sondern per E-Mail an den Maintainer
-([mleem97](https://github.com/mleem97)) mit Betreff `[SECURITY] gregMod.Inventory` und folgenden Angaben:
+Please report vulnerabilities **not** as a public issue, but by email to the maintainer
+([mleem97](https://github.com/mleem97)) with the subject `[SECURITY] gregMod.Inventory` and the following information:
 
-- betroffene Version (`VERSION` / Commit),
-- Schritte zur Reproduktion,
-- mögliche Auswirkungen.
+- affected version (`VERSION` / commit),
+- steps to reproduce,
+- potential impact.
 
-Antwortziel: Bestätigung innerhalb von 72 Stunden. Details werden erst nach einem Fix veröffentlicht
-(Coordinated Disclosure).
+Response target: confirmation within 72 hours. Details are only published after a fix
+(coordinated disclosure).
 
-## Unterstützte Versionen
+## Supported versions
 
 | Version | Support |
 |---|---|
-| Letztes Release (`VERSION`) | ✅ |
-| Ältere | ❌ (nur Best-Effort) |
+| Latest release (`VERSION`) | ✅ |
+| Older | ❌ (best effort only) |

@@ -2,18 +2,18 @@
 
 > gregMod.Inventory** adds a 9-slot hotbar inventory to **Data Center**. Carry multiple items and switch between them using the scroll wheel or number keys 1–9.
 
-Repo: [https://github.com/mleem97/gregMod.Inventory](https://github.com/mleem97/gregMod.Inventory) · Version: `0.1.0` · Lizenz: Apache-2.0.
+Repo: [https://github.com/mleem97/gregMod.Inventory](https://github.com/mleem97/gregMod.Inventory) · Version: `0.1.0` · License: Apache-2.0.
 
-## 1. Klonen
+## 1. Clone
 
 ```bash
 git clone git@github.com:mleem97/gregMod.Inventory.git
 cd gregMod.Inventory
 ```
 
-## 2. Bauen / Starten
+## 2. Build / Start
 
-Je nach Tech-Stack **einen** Weg wählen:
+Depending on your tech stack, choose **one** path:
 
 ```bash
 # .NET
@@ -31,7 +31,7 @@ pip install -r requirements.txt
 python -m <modul>
 ```
 
-## 3. Testen
+## 3. Test
 
 ```bash
 dotnet test            # .NET
@@ -39,5 +39,5 @@ pnpm test              # Node
 pytest                 # Python
 ```
 
-Details stehen in [README.md](README.md) und [docs/INDEX.md](docs/INDEX.md).
-Bei Problemen: Issue anlegen ([Issues](https://github.com/mleem97/gregMod.Inventory/issues)) oder [CONTRIBUTING.md](CONTRIBUTING.md) lesen.
+Details can be found in [README.md](README.md) and [docs/INDEX.md](docs/INDEX.md).
+If you run into problems: file an issue ([Issues](https://github.com/mleem97/gregMod.Inventory/issues)) or read [CONTRIBUTING.md](CONTRIBUTING.md).
