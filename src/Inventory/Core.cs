@@ -4,7 +4,7 @@ using MelonLoader;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[assembly: MelonInfo(typeof(GregModInventory.Core), "gregMod.Inventory", "1.1.0", "leoms1408 / mleem97")]
+[assembly: MelonInfo(typeof(GregModInventory.Core), "gregMod.Inventory", "1.1.1", "leoms1408 / mleem97")]
 [assembly: MelonGame("Waseku", "Data Center")]
 
 namespace GregModInventory
@@ -37,7 +37,7 @@ namespace GregModInventory
             {
                 LoggerInstance.Warning($"Sidecar registration failed: {ex.Message}");
             }
-            LoggerInstance.Msg("gregMod.Inventory v1.1.0 loaded. Based on Inventory by leoms1408.");
+            LoggerInstance.Msg("gregMod.Inventory v1.1.1 loaded. Based on Inventory by leoms1408.");
         }
 
         public override void OnUpdate()

@@ -2,6 +2,12 @@
 
 Format: [Keep a Changelog](https://keepachangelog.com/de/1.0.0/). Version: see [`VERSION`](VERSION).
 
+## [1.1.1] — 2026-09-24
+
+### Changed
+
+- English strings throughout.
+
 ## [Unreleased]
 
 ### Added
