@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Mod-lokaler Mirror von gregCore.UI.GregImGuiTheme (kanonisch dort). (Himmelblau/Atollblau, modern minimal).
-// Absichtlich entkoppelt (kein gregCore nötig): Dummy-sichere Factories
+// Deliberately decoupled (no gregCore needed): dummy-safe factories
 // (parameterlose Ctors + Feldzuweisung). Bei Theme-Aenderungen hier nachziehen.
 internal static class ModImGuiTheme
 {
