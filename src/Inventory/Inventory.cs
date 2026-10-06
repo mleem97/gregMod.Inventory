@@ -37,6 +37,87 @@ namespace GregModInventory
         }
 
         /// <summary>
+        /// Set by a save restore (which stashes every slot, including the one
+        /// that was in hand). Consumed from Core.OnUpdate once gameplay is live:
+        /// during the load the hand position isn't usable yet, so equipping
+        /// right away left the item invisible until the next slot switch.
+        /// </summary>
+        internal static bool PendingEquip { get; set; }
+
+        /// <summary>Earliest time (unscaled) the pending re-equip may run.</summary>
+        internal static float PendingEquipAt { get; set; }
+
+        /// <summary>
+        /// Put the active slot's items into the player's hand if the hand is empty.
+        /// </summary>
+        public static void EquipActiveSlot()
+        {
+            var pm = PlayerManager.instance;
+            if (pm == null || pm.objectInHand != PlayerManager.ObjectInHand.None) return;
+            var slot = Slots[ActiveSlot];
+            RestoreSlotItems(ActiveSlot);
+            if (slot != null && pm.objectInHand != PlayerManager.ObjectInHand.None)
+            {
+                _watchSlot = slot;
+                _watchIndex = ActiveSlot;
+                _watchUntil = Time.unscaledTime + 5f;
+            }
+
+            // Restored cables have no icon: it was captured before their materials
+            // were set up. Core.OnUpdate retries from the live hand object for a
+            // short while (the materials are only ready a frame or more later).
+            if (HandIcon == null) IconRetryFrames = 120;
+        }
+
+        private static InventorySlot _watchSlot;
+        private static int _watchIndex;
+        private static float _watchUntil;
+
+        /// <summary>
+        /// Call every frame. Shortly after a load the game can reset the hand
+        /// state to empty after we re-equipped, leaving the item attached to the
+        /// hand but untracked (not shown in the hotbar, can't be dropped). If the
+        /// items are still at the hand position, put them back in hand.
+        /// </summary>
+        public static void WatchEquip()
+        {
+            if (_watchSlot == null) return;
+            if (Time.unscaledTime > _watchUntil) { _watchSlot = null; return; }
+
+            var pm = PlayerManager.instance;
+            if (pm == null || pm.objectInHand != PlayerManager.ObjectInHand.None) return;
+
+            var handPos = pm.objectInHandPositionGO != null ? pm.objectInHandPositionGO.transform : null;
+            bool stillAtHand = false;
+            if (handPos != null && _watchSlot.StoredObjects != null)
+            {
+                foreach (var go in _watchSlot.StoredObjects)
+                    if (go != null && go.transform.parent == handPos) { stillAtHand = true; break; }
+            }
+            if (!stillAtHand) { _watchSlot = null; return; } // dropped or switched away
+
+            Slots[_watchIndex] = _watchSlot;
+            ActiveSlot = _watchIndex;
+            _watchSlot = null;
+            RestoreSlotItems(_watchIndex);
+            MelonLoader.MelonLogger.Msg("[Inventory] Hand state was reset after load; item put back in hand.");
+        }
+
+        /// <summary>Frames left to retry capturing HandIcon after a re-equip.</summary>
+        internal static int IconRetryFrames { get; set; }
+
+        /// <summary>One icon capture attempt from the objects in hand.</summary>
+        public static void TryCaptureHandIcon()
+        {
+            var pm = PlayerManager.instance;
+            if (pm == null || pm.objectInHandGO == null) return;
+            var objects = new List<GameObject>();
+            foreach (var go in pm.objectInHandGO)
+                if (go != null) objects.Add(go);
+            if (objects.Count > 0) HandIcon = GetItemIcon(objects);
+        }
+
+        /// <summary>
         /// Cycle to the next/previous slot (direction +1 or -1).
         /// </summary>
         public static void CycleSlot(int direction)
@@ -215,7 +296,12 @@ namespace GregModInventory
             for (int i = 0; i < MaxSlots; i++)
             {
                 if (Slots[i] != null && Slots[i].IsEmpty())
+                {
+                    MelonLoader.MelonLogger.Warning(
+                        $"[Inventory] CleanupSlots: slot {i} ('{Slots[i].DisplayName}') emptied — " +
+                        "its stored GameObject(s) were destroyed/null.");
                     Slots[i] = null;
+                }
             }
         }
     }

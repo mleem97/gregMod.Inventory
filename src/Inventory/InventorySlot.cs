@@ -18,7 +18,7 @@ namespace GregModInventory
 
         // Stash high above the world — avoids negative-Y kill zones some games use.
         // Must stay above StashThreshold used in the Harmony patch (1000f).
-        private static readonly Vector3 StashPosition = new Vector3(0, 5000, 0);
+        public static readonly Vector3 StashPosition = new Vector3(0, 5000, 0);
 
         public InventorySlot(PlayerManager.ObjectInHand itemType, GameObject[] objects,
                              string displayName, int prefabID, Texture2D icon = null)
@@ -63,21 +63,16 @@ namespace GregModInventory
                         Core.CachedInputCtrl = usable.inputctrl;
                 }
 
-                // ALL items kept disabled in stash: invisible,
-                // no Update()/raycast, no save scans. CableSpinners also
-                // teleported to stash position (backup for
-                // Y harmony patch); RestoreToHand reactivates them.
-                if (go.GetComponent<CableSpinner>() != null)
-                {
-                    go.transform.SetParent(null, false);
-                    go.transform.position = StashPosition;
-                    go.SetActive(false);
-                }
-                else
-                {
-                    go.transform.SetParent(null, false);
-                    go.SetActive(false);
-                }
+                // ALL items kept disabled in stash: invisible, no Update()/
+                // raycast, no save scans. ALSO teleported to the stash position
+                // (not just CableSpinners) — an item left at its raw spawn/last
+                // position while merely inactive is still a loose, unparented
+                // object sitting in normal play space, which some native cleanup
+                // sweep can apparently destroy. Moving it far away first removes
+                // that risk entirely. RestoreToHand repositions on pickup anyway.
+                go.transform.SetParent(null, false);
+                go.transform.position = StashPosition;
+                go.SetActive(false);
             }
         }
 
