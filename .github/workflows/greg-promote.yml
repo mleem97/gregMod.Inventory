@@ -1,0 +1,97 @@
+name: greg promote dev -> staging
+
+# Branch model: contribute-here -> dev -> staging -> main.
+# This workflow auto-promotes dev to staging when ALL quality gates pass.
+# Gates (enforced in code, owner: mleem97):
+#   build, tests, coverage>=90%% with <=5pp drop vs staging,
+#   security (gitleaks=0, dep-vuln high/critical=0, warnings delta<=0),
+#   version-consistency (mods), conventional-commits.
+# Gate rule: build must pass; tests/coverage enforced for dotnet/rust kinds
+# (fail closed when missing); security/consistency/conventional always enforced.
+# Promotion pushes only for github.actor == 'mleem97'. No push on failure;
+# a tracking issue (label staging-gate) is opened/updated/closed instead.
+
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Evaluate gates only (no push)'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: promote-dev-staging-gregMod.Inventory
+  cancel-in-progress: false
+
+env:
+  STAGE: staging
+  KIND: dotnet-mod
+  NEEDS_REFS: true
+
+jobs:
+  gates:
+    runs-on: ["self-hosted", "Linux", "X64", "shitcloud", "gregmod-inventory"]
+    outputs:
+      verdict: ${{ steps.eval.outputs.verdict }}
+      sha: ${{ steps.eval.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Evaluate quality gates
+        id: eval
+        run: |
+          bash "$GITHUB_WORKSPACE/.github/scripts/greg-gates.sh"
+      - name: Upload gate report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate-report-dev-${{ github.sha }}
+          path: gate-report.txt
+          if-no-files-found: warn
+
+  promote:
+    needs: gates
+    if: needs.gates.outputs.verdict == 'pass' && github.actor == 'mleem97' && (github.event_name == 'push' || inputs.dry_run == false)
+    runs-on: ["self-hosted", "Linux", "X64", "shitcloud", "gregmod-inventory"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: dev
+      - name: Fast-forward staging to gated sha
+        run: |
+          git push origin "${{ needs.gates.outputs.sha }}:refs/heads/staging"
+
+  sync-issue:
+    needs: gates
+    if: always() && github.event_name == 'push'
+    runs-on: ["self-hosted", "Linux", "X64", "shitcloud", "gregmod-inventory"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync staging-gate tracking issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERDICT: ${{ needs.gates.outputs.verdict }}
+        run: |
+          TITLE="[staging-gate] dev -> staging blocked"
+          BODY="$(printf 'Promotion blocked by quality gates (dev @ %s). See run %s.\n\n```\n%s\n```\n' '${{ github.sha }}' '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}' "$(cat gate-report.txt 2>/dev/null || echo 'no report')")"
+          OPEN="$(gh issue list --label staging-gate --state open --json number --jq '.[0].number // empty')"
+          if [ "$VERDICT" = "pass" ]; then
+            [ -n "$OPEN" ] && gh issue close "$OPEN" --comment "Gates green again — promotion resumed." || true
+          else
+            if [ -z "$OPEN" ]; then
+              gh issue create --title "$TITLE" --label staging-gate --body "$BODY" || true
+            else
+              gh issue comment "$OPEN" --body "Still blocked @ ${{ github.sha }}." || true
+            fi
+          fi
