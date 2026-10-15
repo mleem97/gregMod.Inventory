@@ -162,7 +162,7 @@ esac
 
 # ---------- version consistency (repos with VERSION file) ----------
 if [ -f VERSION ]; then
-  python3 - <<'PYEOF' >>gate-report.txt 2>&1 || echo "GATE consistency: FAIL - checker error" | tee -a gate-report.txt
+  CONS_OUT="$(python3 - <<'PYEOF' 2>&1
 import re, json, subprocess, glob, sys
 def sh(*a):
     try: return subprocess.run(a, capture_output=True, text=True).stdout.strip()
@@ -195,9 +195,11 @@ for f in sp.run(["git", "grep", "-l", "MelonInfo", "--", "src"], capture_output=
                 if re.sub(r"-dev$", "", v) != base:
                     ok = False; notes.append(f"{f}: MelonInfo {v}")
 print(("GATE consistency: PASS - all version sources agree on " + base) if ok else ("GATE consistency: FAIL - " + "; ".join(notes) + f" (VERSION base={base})"))
-sys.exit(0 if ok else 1)
+sys.exit(0)
 PYEOF
-  [ $? -eq 0 ] || GATES_OK=false
+)"
+  echo "$CONS_OUT" >>gate-report.txt
+  echo "$CONS_OUT" | grep -q "^GATE consistency: PASS" || GATES_OK=false
 else gna consistency "no VERSION file"; fi
 
 # ---------- conventional commits ----------
