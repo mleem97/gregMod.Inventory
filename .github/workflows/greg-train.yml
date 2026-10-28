@@ -1,0 +1,78 @@
+name: greg train staging -> main
+
+# Second stage of the branch model: advance main from staging when ready.
+# Readiness = fast-forward possible + owner actor + conventional commits.
+# Quality was already gated at dev -> staging (same sha, no rebuild here).
+
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Check readiness only (no push)'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: train-staging-main-gregMod.Inventory
+  cancel-in-progress: false
+
+jobs:
+  readiness:
+    runs-on: ["self-hosted", "Linux", "X64", "shitcloud", "gregmod-inventory"]
+    outputs:
+      verdict: ${{ steps.eval.outputs.verdict }}
+      sha: ${{ steps.eval.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Evaluate readiness
+        id: eval
+        run: |
+          set -u
+          git fetch origin main >/dev/null 2>&1 || true
+          SHA="$(git rev-parse origin/staging)"
+          OK=true
+          git merge-base --is-ancestor "origin/main" "origin/staging"             && echo "READY ff: main is ancestor of staging" || { echo "READY ff: FAIL (main not ancestor)"; OK=false; }
+          if git log --no-merges --format=%s "origin/main..origin/staging" 2>/dev/null | grep -vE "^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(.+\))?!?: .+" | grep -q .; then
+            echo "READY conventional: FAIL"; OK=false
+          else echo "READY conventional: PASS"; fi
+          [ "$OK" = true ] && echo "verdict=pass" >> "$GITHUB_OUTPUT" || echo "verdict=fail" >> "$GITHUB_OUTPUT"
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+
+  advance:
+    needs: readiness
+    if: needs.readiness.outputs.verdict == 'pass' && github.actor == 'mleem97' && (github.event_name == 'push' || inputs.dry_run == false)
+    runs-on: ["self-hosted", "Linux", "X64", "shitcloud", "gregmod-inventory"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fast-forward main to gated sha
+        run: |
+          git push origin "${{ needs.readiness.outputs.sha }}:refs/heads/main"
+
+  sync-issue:
+    needs: readiness
+    if: always() && github.event_name == 'push'
+    runs-on: ["self-hosted", "Linux", "X64", "shitcloud", "gregmod-inventory"]
+    steps:
+      - name: Sync release-train tracking issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERDICT: ${{ needs.readiness.outputs.verdict }}
+        run: |
+          TITLE="[release-train] staging -> main blocked"
+          OPEN="$(gh issue list --label release-train --state open --json number --jq '.[0].number // empty')"
+          if [ "$VERDICT" = "pass" ]; then
+            [ -n "$OPEN" ] && gh issue close "$OPEN" --comment "Train green again." || true
+          else
+            [ -z "$OPEN" ] && gh issue create --title "$TITLE" --label release-train --body "Readiness failed for run ${{ github.run_id }}." || true
+          fi

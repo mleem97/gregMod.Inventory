@@ -1,0 +1,59 @@
+name: greg auto-release main -> GitHub Release
+
+# Fully automatic versioning + release on main changes. No manual tags.
+# Bump from conventional commits since last v-tag:
+#   BREAKING/! -> major, feat -> minor, fix|perf|refactor|revert -> patch,
+#   docs|chore|ci|test|style|build only -> no release (skip).
+# Updates VERSION/*.csproj/manifest.json/MelonInfo, commits, tags vX.Y.Z,
+# builds Release (game refs from /opt/greg-refs), attaches the mod DLL,
+# writes CHANGELOG entry, then opens the next -dev cycle. Rerun-safe.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'data/**'
+      - '*.csproj'
+      - '*.sln'
+      - 'manifest.json'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Compute version only (no tag/release)'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-main-gregMod.Inventory
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ["self-hosted", "Linux", "X64", "shitcloud", "gregmod-inventory"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: References for build
+        run: |
+          mkdir -p references
+          cp -n /opt/greg-refs/net6/*.dll references/ 2>/dev/null || true
+          cp -n /opt/greg-refs/Il2CppAssemblies/*.dll references/ 2>/dev/null || true
+      - name: Decide version + apply + tag + build + release
+        env:
+          DRY_RUN: ${{ inputs.dry_run || false }}
+        run: |
+          python3 "$GITHUB_WORKSPACE/.github/scripts/greg-release.py"
+      - name: Upload DLL artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-assets-${{ github.sha }}
+          path: dist/*
+          if-no-files-found: warn
